@@ -276,7 +276,7 @@ S7#DS_RAG/
 - [x] 8 base query traces (A–H) in `S7code/traces/`
 - [x] 5 custom traces (C1–C5) with `no_corpus_comparison` blocks
 - [x] 2 semantic queries with zero token overlap proof (C3, G)
-- [x] 56-document corpus in `S7code/sandbox/corpus/`
+- [x] 56-document corpus in `S7code/sandbox/RAG/`
 - [x] Perception SYSTEM grep test: zero MCP tool names
 - [x] FAISS cross-run persistence (`IndexFlatIP`, `state/index.faiss`)
 - [x] React evaluation dashboard (`rag-ui/`)
