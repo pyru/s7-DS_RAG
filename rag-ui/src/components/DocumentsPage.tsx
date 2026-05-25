@@ -189,16 +189,16 @@ function resolvePlaygroundTrace(query: string): { events: TraceEvent[]; result: 
     return { events: MOCK_TRACES[2].events, result: MOCK_TRACES[2].result! };
 
   if (match(['asyncio', 'async', 'python', 'event loop', 'coroutine']))
-    return { events: MOCK_TRACES[3].events, result: MOCK_TRACES[3].result! };
-
-  if (match(['transformer', 'attention', 'self-attention', 'positional encoding']))
     return { events: MOCK_TRACES[4].events, result: MOCK_TRACES[4].result! };
 
+  if (match(['transformer', 'attention', 'self-attention', 'positional encoding']))
+    return { events: MOCK_TRACES[5].events, result: MOCK_TRACES[5].result! };
+
   if (match(['credit assignment', 'attribution', 'reward', 'backprop']))
-    return { events: MOCK_TRACES[6].events, result: MOCK_TRACES[6].result! };
+    return { events: MOCK_TRACES[7].events, result: MOCK_TRACES[7].result! };
 
   if (match(['react', 'chain-of-thought', 'cot', 'reasoning', 'intermediate']))
-    return { events: MOCK_TRACES[7].events, result: MOCK_TRACES[7].result! };
+    return { events: MOCK_TRACES[8].events, result: MOCK_TRACES[8].result! };
 
   // Generic RAG trace
   const snippet = query.length > 55 ? query.slice(0, 52) + '…' : query;
