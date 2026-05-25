@@ -124,52 +124,51 @@ const CATEGORY_PROMPTS: Record<string, string[]> = {
   ],
   // ── PDF Library categories ─────────────────────────────────────
   'Python & Data Science': [
-    'How does asyncio enable concurrent Python programming?',
-    'What are Python type hints and how do Protocol types work?',
-    'How do generators and iterators differ, and when to use each?',
-    'What is the difference between threading and multiprocessing in Python?',
+    'According to VanderPlas, what is the difference between NumPy arrays and Python lists for numerical operations?',
+    'How does Wes McKinney\'s Python for Data Analysis explain handling missing data with pandas?',
+    'What does Python Crash Course say about list comprehensions and when to use them?',
+    'How does Data Science at the Command Line explain building data pipelines with Unix tools?',
   ],
   'Machine Learning': [
-    'What are the trade-offs between full fine-tuning and LoRA?',
-    'How do scaling laws predict optimal model training compute?',
-    'What is RLHF and how does it align LLMs with human preferences?',
-    'What evaluation metrics best measure LLM reasoning performance?',
+    'What does Aurélien Géron say about the bias-variance tradeoff in Hands-On Machine Learning?',
+    'According to Andrew Ng\'s ML Yearning, how should you prioritise which metrics to optimise?',
+    'How does Burkov\'s Hundred-Page ML Book explain support vector machines?',
+    'What does the StatQuest Illustrated Guide say about gradient boosting step by step?',
   ],
   'Deep Learning': [
-    'How does the Transformer architecture use self-attention?',
-    'What is knowledge distillation and how does it compress models?',
-    'How do multimodal models align image and text representations?',
-    'How does attention differ between encoder and decoder layers?',
+    'How does Goodfellow\'s Deep Learning textbook explain backpropagation through time (BPTT)?',
+    'According to Deep Learning with Python by Brownlee, what hyperparameters matter most in a CNN?',
+    'What does Goodfellow et al. say about dropout and other regularisation techniques for deep networks?',
   ],
   'Statistics & Math': [
-    'What is Shannon entropy and how is H(X) = -Σpᵢlog₂pᵢ derived?',
-    'How does PCA use eigendecomposition to reduce dimensionality?',
-    'What is mutual information and how does it relate to KL divergence?',
-    'How do clustering algorithms like k-means and DBSCAN compare?',
+    'How does Allen Downey\'s Think Stats explain the central limit theorem for programmers?',
+    'What does Mathematics for Machine Learning say about eigenvalues and their role in PCA?',
+    'How does Introductory Business Statistics (OpenStax) define hypothesis testing and p-values?',
+    'What does Modeling and Simulation in Python say about Monte Carlo simulation methods?',
   ],
   'Systems & Engineering': [
-    'What are the CAP theorem implications for distributed databases?',
-    'How do microservices patterns like saga and circuit breaker work?',
-    'How does Docker and Kubernetes manage containerised workloads?',
-    'What REST API design principles ensure scalability?',
+    'How does Chip Huyen\'s Designing ML Systems categorise types of data distribution shift?',
+    'What does Kleppmann\'s Designing Data-Intensive Applications say about stream vs batch processing?',
+    'How does Fundamentals of Data Engineering define the data engineering lifecycle?',
+    'What system design principles does Alex Xu cover for designing a recommendation system?',
   ],
   'Algorithms & Coding': [
-    'How does dynamic programming solve optimisation problems?',
-    'What data structures are most efficient for nearest neighbour search?',
-    'How do hash tables achieve O(1) average lookup time?',
-    'What are the time and space tradeoffs between sorting algorithms?',
+    'How does Grokking Algorithms explain binary search and its O(log n) time complexity?',
+    'What does Cracking the Coding Interview say about approaching dynamic programming problems?',
+    'How does The Recursive Book of Recursion explain choosing a base case?',
+    'What graph traversal algorithms does Grokking Algorithms recommend for shortest-path problems?',
   ],
   'Interview Prep': [
-    'What are the most important ML evaluation metrics to know?',
-    'How does SQL indexing improve database query performance?',
-    'What is the difference between precision, recall, and F1 score?',
-    'How do you approach a machine learning system design interview?',
+    'What are the most frequently asked ML system design questions in the DSI ACE PREP handbook?',
+    'How does the 500 Most Important DS Interview Q&A book explain model evaluation metrics?',
+    'What does the Data Science Interview handbook say about handling class imbalance?',
+    'How should you explain the difference between precision, recall, and F1 in an interview?',
   ],
   'Visualization & BI': [
-    'What are best practices for effective data visualisation?',
-    'How do you choose the right chart type for your data?',
-    'What evaluation metrics matter most for ML model comparison?',
-    'How does dimensionality reduction help visualise high-dimensional data?',
+    'What chart types does The Tableau Workshop recommend for comparing categories over time?',
+    'How does Microsoft Power BI For Dummies explain calculated columns vs measures in DAX?',
+    'What does Data Storytelling and Visualization with Tableau say about choosing charts for your audience?',
+    'How does Excel Data Analysis For Dummies explain pivot tables for summarising large datasets?',
   ],
 };
 
@@ -448,6 +447,39 @@ function DocsStats() {
   );
 }
 
+function PdfStats() {
+  const categories  = new Set(PDFS.map((p) => p.category)).size;
+  const authors     = new Set(PDFS.map((p) => p.author)).size;
+  const years       = PDFS.map((p) => parseInt(p.year, 10)).filter(Boolean);
+  const oldest      = Math.min(...years);
+  const newest      = Math.max(...years);
+
+  return (
+    <div className="stats-row">
+      <div className="stat-card">
+        <span className="stat-value">{PDFS.length}</span>
+        <span className="stat-label">Total Books</span>
+      </div>
+      <div className="stat-card">
+        <span className="stat-value" style={{ color: 'var(--green)' }}>{categories}</span>
+        <span className="stat-label">Categories</span>
+      </div>
+      <div className="stat-card">
+        <span className="stat-value" style={{ color: 'var(--yellow)' }}>{authors}</span>
+        <span className="stat-label">Authors</span>
+      </div>
+      <div className="stat-card">
+        <span className="stat-value" style={{ color: 'var(--text-muted)' }}>{oldest}</span>
+        <span className="stat-label">Oldest</span>
+      </div>
+      <div className="stat-card">
+        <span className="stat-value">{newest}</span>
+        <span className="stat-label">Newest</span>
+      </div>
+    </div>
+  );
+}
+
 // ── Toast ─────────────────────────────────────────────────────────
 function Toast({ message, visible }: { message: string; visible: boolean }) {
   if (!visible) return null;
@@ -589,6 +621,8 @@ export default function DocumentsPage() {
       {/* ── PDF Library tab ── */}
       {activeTab === 'pdfs' && (
         <>
+          <PdfStats />
+
           <div className="pdf-library-header">
             <p className="pdf-library-desc">
               {PDFS.length} reference books in <code>S7code/sandbox/RAG/</code> — organised by domain.
