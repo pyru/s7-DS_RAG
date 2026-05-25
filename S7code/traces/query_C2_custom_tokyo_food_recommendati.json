@@ -1,0 +1,48 @@
+{
+  "trace_id": "C2_20260524_134034",
+  "query_id": "C2",
+  "label": "Custom: Tokyo food recommendations",
+  "query": "What are the best food experiences in Tokyo? I'm especially interested in affordable local options.",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 3.8,
+  "total_iterations": 2,
+  "semantic_retrieval": false,
+  "cross_run_memory": false,
+  "goals": [
+    "Query knowledge base for Tokyo food and affordable dining options",
+    "Synthesise recommendations"
+  ],
+  "memory_hits_on_first_read": [
+    "[corpus:tokyo_activities_guide.md chunk 2/4] Tokyo's food scene ranges from Michelin-starred restaurants to standing ramen bars costing ¥700...",
+    "[corpus:japan_culture_etiquette.md chunk 3/5] Eating in Japan: izakayas are casual pubs serving small plates, perfect for budget travellers..."
+  ],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Query knowledge base for Tokyo food and affordable dining options",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "Tokyo food experiences affordable local dining options"
+      },
+      "result_preview": "Ramen shops, sushi-go-round (kaiten-zushi), depachika basement food halls, convenience store onigiri, izakaya pubs...",
+      "artifact_id": null,
+      "memory_new_items": 0
+    },
+    {
+      "iter": 2,
+      "goal": "Synthesise recommendations",
+      "tool": null,
+      "arguments": {},
+      "is_final": true
+    }
+  ],
+  "final_answer": "**Best Affordable Food Experiences in Tokyo**\n\n1. **Standing Ramen Bars (Tachi-gui Ramen)**: Bowl of ramen ¥700–¥900. Try Shinjuku or Shibuya station areas.\n2. **Kaiten-zushi (conveyor-belt sushi)**: Plates from ¥110–¥330. Chains: Sushiro, Kura Sushi.\n3. **Depachika (department store basement food halls)**: Discounted bento boxes after 7 PM.\n4. **Convenience Store Onigiri**: 7-Eleven, Lawson, FamilyMart — ¥100–¥200, freshly made daily.\n5. **Izakayas**: Casual pubs with small sharing plates, draft beer sets from ¥1,500.\n6. **Morning Teishoku (set breakfast)**: Denny's Japan or Gusto — eggs, rice, miso soup for ¥500.\n\n**Neighbourhoods to eat in**: Shibuya (young/trendy), Asakusa (traditional shitamachi), Tsukiji outer market (seafood breakfast).",
+  "artifact_ids": [],
+  "no_corpus_comparison": {
+    "scenario": "Empty index — no corpus documents indexed",
+    "memory_hits": [],
+    "agent_behaviour": "search_knowledge returns zero results. Agent provides generic Tokyo tourist advice.",
+    "degraded_answer": "[Generic LLM knowledge: 'Tokyo has great sushi and ramen.' No specific neighborhoods, no price points in yen, no local chain names, no izakaya culture explanation, no depachika tip. Misses the corpus-specific insight about discount bento timing and convenience store quality.]",
+    "verdict": "FAIL — superficial answer without corpus. Missing price data, neighborhood specifics, and cultural context from corpus."
+  }
+}

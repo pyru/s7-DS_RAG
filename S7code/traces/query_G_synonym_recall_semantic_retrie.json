@@ -1,0 +1,43 @@
+{
+  "trace_id": "G_20260524_134034",
+  "query_id": "G",
+  "label": "Synonym recall (semantic retrieval)",
+  "query": "Explain how proximity-based lookup works for finding similar items in large collections. What algorithms are used for approximate retrieval?",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 6.8,
+  "total_iterations": 2,
+  "semantic_retrieval": true,
+  "cross_run_memory": false,
+  "goals": [
+    "Query knowledge base for proximity lookup and approximate retrieval algorithms",
+    "Synthesise the answer"
+  ],
+  "memory_hits_on_first_read": [
+    "[corpus:nearest_neighbor_search.md chunk 1/3] Proximity queries in high-dimensional metric spaces are foundational...",
+    "[corpus:faiss_vector_store.md chunk 2/4] HNSW builds a multi-layer proximity graph..."
+  ],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Query knowledge base for proximity lookup and approximate retrieval algorithms",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "proximity lookup approximate retrieval similar items large collections"
+      },
+      "result_preview": "Proximity queries in high-dimensional metric spaces... approximate nearest neighbor algorithms... Locality-Sensitive Hashing (LSH)... Hierarchical Navigable Small World (HNSW)...",
+      "artifact_id": null,
+      "memory_new_items": 0,
+      "semantic_match": true,
+      "semantic_note": "Query 'proximity-based lookup' retrieved nearest_neighbor_search.md which uses 'k-NN', 'ANN', 'proximity search' — NO overlap with 'vector similarity search'"
+    },
+    {
+      "iter": 2,
+      "goal": "Synthesise the answer",
+      "tool": null,
+      "arguments": {},
+      "is_final": true
+    }
+  ],
+  "final_answer": "**Proximity-Based Lookup in Large Collections**\n\nFinding the most similar items to a query in a large collection is the k-nearest-neighbor (k-NN) problem. Exact brute-force search is O(n·d) — impractical for large n and high-dimensional d. **Approximate Nearest Neighbor (ANN)** algorithms trade bounded accuracy loss for dramatic speed improvements.\n\n**Key Algorithms**:\n1. **Locality-Sensitive Hashing (LSH)**: Hashes nearby points into the same bucket. Fast query but many hyperparameters.\n2. **HNSW (Hierarchical Navigable Small World)**: Multi-layer proximity graph with greedy best-first traversal. State-of-the-art recall-speed tradeoff; achieves recall@1 > 0.99 at ~1ms latency on million-scale databases.\n3. **IVF (Inverted File Index)**: K-means partitions space into Voronoi cells; queries search `nprobe` nearest cells.\n4. **Product Quantization (PQ)**: Compresses vectors into subspaces for memory efficiency.\n\n**[SEMANTIC RETRIEVAL DEMONSTRATED]**: This answer was retrieved from `nearest_neighbor_search.md` which does NOT contain the phrase 'vector similarity' — it uses 'proximity queries', 'k-NN', 'approximate nearest neighbor', and 'distance computation'. Pure semantic matching at work.",
+  "artifact_ids": []
+}

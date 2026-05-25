@@ -1,0 +1,49 @@
+{
+  "trace_id": "C4_20260524_134034",
+  "query_id": "C4",
+  "label": "Custom: LoRA vs full fine-tuning tradeoffs",
+  "query": "When should I use parameter-efficient fine-tuning versus full fine-tuning? What are the memory requirements?",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 4.9,
+  "total_iterations": 2,
+  "semantic_retrieval": false,
+  "cross_run_memory": false,
+  "goals": [
+    "Query knowledge base for PEFT vs full fine-tuning comparison and memory requirements",
+    "Synthesise a decision guide"
+  ],
+  "memory_hits_on_first_read": [
+    "[corpus:fine_tuning_llms.md chunk 1/4] Full fine-tuning updates all model weights and requires optimizer states: for a 7B model, full fine-tuning needs ~112 GB GPU VRAM...",
+    "[corpus:fine_tuning_llms.md chunk 2/4] LoRA (Low-Rank Adaptation) inserts trainable rank-r matrices into attention layers. Only 0.1–1% of parameters are trained...",
+    "[corpus:knowledge_distillation.md chunk 3/4] When the target task is very different from pretraining distribution, full fine-tuning outperforms PEFT..."
+  ],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Query knowledge base for PEFT vs full fine-tuning comparison and memory requirements",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "parameter efficient fine-tuning LoRA full fine-tuning memory GPU VRAM requirements"
+      },
+      "result_preview": "LoRA rank-r matrices... 0.1-1% parameters trained... full fine-tuning 7B model 112GB VRAM... QLoRA 4-bit quantization...",
+      "artifact_id": null,
+      "memory_new_items": 0
+    },
+    {
+      "iter": 2,
+      "goal": "Synthesise a decision guide",
+      "tool": null,
+      "arguments": {},
+      "is_final": true
+    }
+  ],
+  "final_answer": "**PEFT vs Full Fine-Tuning Decision Guide**\n\n| Factor | LoRA / QLoRA | Full Fine-Tuning |\n|--------|-------------|------------------|\n| Parameters trained | ~0.1–1% (rank-r adapters) | 100% |\n| GPU VRAM (7B model) | 6–24 GB (QLoRA: 6 GB) | ~112 GB |\n| Training speed | 3–10× faster | Baseline |\n| Task distribution shift | Small-to-moderate | Large / domain shift |\n| Inference overhead | Near-zero (merge adapters) | None |\n\n**Use PEFT (LoRA/QLoRA) when**:\n- Consumer or single-GPU hardware (< 24 GB VRAM)\n- Task is similar to pretraining distribution (instruction following, QA, summarization)\n- You need to serve multiple fine-tuned variants from one base model\n\n**Use full fine-tuning when**:\n- Large distribution shift (code from scratch, new language, specialized domain)\n- Multi-node cluster available\n- Maximum task performance is critical and training cost is secondary",
+  "artifact_ids": [],
+  "no_corpus_comparison": {
+    "scenario": "Empty index — no corpus documents indexed",
+    "memory_hits": [],
+    "agent_behaviour": "search_knowledge returns zero results. LLM provides generic guidance without quantitative memory figures.",
+    "degraded_answer": "[Generic: 'Use LoRA when you have limited compute.' No concrete VRAM numbers, no comparison table, no QLoRA mention, no rank-r explanation, no corpus provenance. fine_tuning_llms.md contained specific GPU VRAM tables for 7B/13B/70B models that the agent cannot retrieve without the index.]",
+    "verdict": "FAIL — answer degrades to vague guidance. Corpus provides exact VRAM figures and decision criteria unavailable to raw LLM."
+  }
+}

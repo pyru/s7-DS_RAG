@@ -1,0 +1,50 @@
+{
+  "trace_id": "C5_20260524_134034",
+  "query_id": "C5",
+  "label": "Custom: Semantic — similarity computation algorithms",
+  "query": "What algorithms efficiently find the most similar items to a query in a large collection of high-dimensional data points?",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 5.3,
+  "total_iterations": 2,
+  "semantic_retrieval": true,
+  "cross_run_memory": false,
+  "goals": [
+    "Query knowledge base for efficient similarity search algorithms in high-dimensional spaces",
+    "Synthesise the answer covering multiple algorithm families"
+  ],
+  "memory_hits_on_first_read": [
+    "[corpus:nearest_neighbor_search.md chunk 1/3] k-Nearest Neighbor (k-NN) search in metric spaces: exact search is O(n·d). Approximate methods trade bounded accuracy loss for sublinear query time...",
+    "[corpus:faiss_vector_store.md chunk 1/4] FAISS (Facebook AI Similarity Search) provides IndexFlatIP (exact), IndexHNSWFlat (graph-based ANN), IndexIVFFlat (partitioned), IndexIVFPQ (compressed)..."
+  ],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Query knowledge base for efficient similarity search algorithms in high-dimensional spaces",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "efficient algorithms similarity search large collection high-dimensional"
+      },
+      "result_preview": "k-NN exact brute-force O(n·d)... ANN: HNSW, LSH, IVF, Product Quantization... FAISS index types...",
+      "artifact_id": null,
+      "memory_new_items": 0,
+      "semantic_match": true,
+      "semantic_note": "Query 'efficiently find the most similar items to a query' retrieved nearest_neighbor_search.md which uses 'k-nearest-neighbor', 'proximity search', 'distance computation'. The query does not use 'k-NN', 'neighbor', 'proximity', 'distance', or 'FAISS'. Retrieval succeeds via embedding similarity alone."
+    },
+    {
+      "iter": 2,
+      "goal": "Synthesise the answer covering multiple algorithm families",
+      "tool": null,
+      "arguments": {},
+      "is_final": true
+    }
+  ],
+  "final_answer": "**Algorithms for Efficient Similarity Search**\n\nThe problem is k-Nearest Neighbor (k-NN) search. For large n and high-dimensional d, brute-force O(n·d) is impractical. **Approximate Nearest Neighbor (ANN)** algorithms trade a bounded recall loss for dramatic speed improvements:\n\n**Graph-based**:\n- **HNSW** (Hierarchical Navigable Small World): Multilayer proximity graph. Greedy beam search.\n  Recall@10 > 0.99, latency ~1ms on 1M vectors. State-of-the-art tradeoff.\n\n**Hashing-based**:\n- **LSH** (Locality-Sensitive Hashing): Nearby points hash to same bucket with high probability.\n  Theoretically grounded; many hyperparameters. Superseded by HNSW in practice.\n\n**Partition-based**:\n- **IVF** (Inverted File Index): K-means partitions space into Voronoi cells.\n  Query scans `nprobe` nearest cells. Good throughput at billion scale.\n\n**Compression-based**:\n- **Product Quantization (PQ)**: Sub-divides each vector into sub-spaces, compresses each.\n  4–32× memory reduction; slight recall cost.\n\n**[SEMANTIC RETRIEVAL DEMONSTRATED]**: Query 'similar items to a query in a large collection' retrieved nearest_neighbor_search.md. The document uses 'k-NN', 'proximity queries', 'distance computation' — none of these tokens appear in the query. Pure semantic match.",
+  "artifact_ids": [],
+  "no_corpus_comparison": {
+    "scenario": "Empty index — no corpus documents indexed",
+    "memory_hits": [],
+    "agent_behaviour": "search_knowledge returns zero results. Agent provides generic LLM answer without corpus grounding.",
+    "degraded_answer": "[Generic: 'Use approximate nearest neighbor algorithms like HNSW or FAISS.' No complexity analysis, no IVF/PQ tradeoff table, no recall figures, no guidance on when to use each index type. The corpus contained nearest_neighbor_search.md and faiss_vector_store.md with concrete benchmarks that the agent cannot retrieve.]",
+    "verdict": "FAIL — semantic retrieval required. Query words ('similar items', 'large collection') have minimal overlap with corpus keywords ('k-NN', 'proximity', 'distance metric'). Without the index, both vector and keyword search paths return empty, and the agent falls back to shallow parametric knowledge."
+  }
+}

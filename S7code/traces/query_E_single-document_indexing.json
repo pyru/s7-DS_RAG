@@ -1,0 +1,50 @@
+{
+  "trace_id": "E_20260524_134034",
+  "query_id": "E",
+  "label": "Single-document indexing",
+  "query": "Index the file corpus/faiss_vector_store.md and then tell me what index types FAISS supports and when to use each one.",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 6.3,
+  "total_iterations": 3,
+  "semantic_retrieval": false,
+  "cross_run_memory": false,
+  "goals": [
+    "Index sandbox/corpus/faiss_vector_store.md into the knowledge base",
+    "Query the indexed content for FAISS index types",
+    "Synthesise the answer"
+  ],
+  "memory_hits_on_first_read": [],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Index sandbox/corpus/faiss_vector_store.md into the knowledge base",
+      "tool": "index_document",
+      "arguments": {
+        "path": "corpus/faiss_vector_store.md"
+      },
+      "result_preview": "{\"path\": \"corpus/faiss_vector_store.md\", \"source\": \"sandbox:corpus/faiss_vector_store.md\", \"chunks_indexed\": 4}",
+      "artifact_id": null,
+      "memory_new_items": 4
+    },
+    {
+      "iter": 2,
+      "goal": "Query the indexed content for FAISS index types",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "FAISS index types IndexFlatL2 IVF HNSW PQ"
+      },
+      "result_preview": "IndexFlatL2: Brute-force L2 (Euclidean) distance. IndexFlatIP: inner product. IndexIVFFlat: Inverted file with exact distance...",
+      "artifact_id": null,
+      "memory_new_items": 0
+    },
+    {
+      "iter": 3,
+      "goal": "Synthesise the answer",
+      "tool": null,
+      "arguments": {},
+      "is_final": true
+    }
+  ],
+  "final_answer": "I've indexed `corpus/faiss_vector_store.md` (4 chunks). Here are FAISS's index types:\n\n**Flat Indices (Exact Search)**\n- `IndexFlatL2`: Brute-force Euclidean distance. Exact results, scales O(n). Use for <1M vectors as ground truth baseline.\n- `IndexFlatIP`: Brute-force inner product (= cosine similarity on normalized vectors).\n\n**IVF (Inverted File)**\nPartitions vectors into k-means clusters. Query searches `nprobe` nearest clusters.\n- `IndexIVFFlat`: IVF + exact search within cells. Use for 1M–100M vectors.\n- Settings: nlist = 4√n, nprobe = nlist/10\n\n**HNSW (Hierarchical Navigable Small World)**\n`IndexHNSWFlat`: Multi-layer proximity graph. Best recall-speed tradeoff, no training required, supports incremental insertion. State-of-the-art at recall>0.99. Use when accuracy > throughput.\n\n**PQ (Product Quantization)**\n`IndexPQ`: Compresses vectors by splitting into subspaces. 8-32× memory reduction at ~2-5% recall loss. Use when dataset doesn't fit in RAM.\n\n**Combined: IVF+PQ**\n`IndexIVFPQ` (via `index_factory(d, 'IVF1024,PQ16')`): Production standard for billion-scale databases.",
+  "artifact_ids": []
+}

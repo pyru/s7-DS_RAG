@@ -1,0 +1,43 @@
+{
+  "trace_id": "F_20260524_134034",
+  "query_id": "F",
+  "label": "Cross-run document recall",
+  "query": "What are the key differences between BM25 and dense vector retrieval? What is RRF?",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 5.2,
+  "total_iterations": 2,
+  "semantic_retrieval": false,
+  "cross_run_memory": true,
+  "goals": [
+    "Query persisted knowledge base for BM25 vs dense retrieval",
+    "Synthesise the answer"
+  ],
+  "memory_hits_on_first_read": [
+    "[corpus:hybrid_search_rrf.md chunk 1/3] BM25 (Best Match 25) scores documents by term frequency...",
+    "[corpus:semantic_search_techniques.md chunk 2/3] Dense retrieval excels at synonym matching...",
+    "[corpus:retrieval_augmented_generation.md chunk 2/4] Hybrid Retrieval with Reciprocal Rank Fusion..."
+  ],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Query persisted knowledge base for BM25 vs dense retrieval",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "BM25 dense retrieval difference RRF fusion"
+      },
+      "result_preview": "BM25 scores documents by term frequency, inverse document frequency... Dense retrieval encodes queries and documents as continuous vectors...",
+      "artifact_id": null,
+      "memory_new_items": 0,
+      "note": "ZERO re-indexing — corpus was indexed in a previous run. This proves cross-run FAISS persistence."
+    },
+    {
+      "iter": 2,
+      "goal": "Synthesise the answer",
+      "tool": null,
+      "arguments": {},
+      "is_final": true
+    }
+  ],
+  "final_answer": "**BM25 vs Dense Vector Retrieval**\n\nBM25 is a sparse retrieval method based on term frequency and inverse document frequency. It scores documents by how often query terms appear, normalized for document length. BM25 excels at exact keyword matches, rare technical terms, and short queries with distinctive words.\n\nDense retrieval encodes both queries and documents as continuous vectors using neural encoders. Similarity is measured by cosine distance or inner product. It excels at synonym matching ('heart attack' ↔ 'myocardial infarction'), paraphrase matching, and conceptual queries without specific terminology.\n\n**Reciprocal Rank Fusion (RRF)**\nRRF merges ranked lists from multiple retrieval systems without requiring score normalization:\n```\nRRF(d) = Σ 1/(k + rank_i(d))  [k=60]\n```\nDocuments appearing in the top ranks of both BM25 and dense retrieval score highest. Hybrid search with RRF consistently outperforms either system alone by 3–8% NDCG@10.",
+  "artifact_ids": []
+}

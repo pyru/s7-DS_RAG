@@ -1,0 +1,50 @@
+{
+  "trace_id": "C3_20260524_134034",
+  "query_id": "C3",
+  "label": "Custom: Semantic — non-blocking execution patterns",
+  "query": "How do programs handle many tasks simultaneously without blocking? What programming patterns enable waiting for multiple operations without freezing the program?",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 5.1,
+  "total_iterations": 2,
+  "semantic_retrieval": true,
+  "cross_run_memory": false,
+  "goals": [
+    "Query knowledge base for concurrent execution and non-blocking patterns",
+    "Synthesise the answer with pattern names"
+  ],
+  "memory_hits_on_first_read": [
+    "[corpus:event_driven_architecture.md chunk 1/3] The reactor pattern uses a single event loop thread that dispatches I/O callbacks without blocking the main thread...",
+    "[corpus:python_asyncio_fundamentals.md chunk 2/4] Cooperative multitasking via coroutines: tasks yield control at await points, allowing the event loop to advance other tasks..."
+  ],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Query knowledge base for concurrent execution and non-blocking patterns",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "non-blocking concurrent tasks event loop patterns multiple operations"
+      },
+      "result_preview": "Reactor pattern, event-driven architecture, I/O multiplexing, callback chains, coroutines, cooperative multitasking...",
+      "artifact_id": null,
+      "memory_new_items": 0,
+      "semantic_match": true,
+      "semantic_note": "Query 'programs handle many tasks simultaneously without blocking' retrieved event_driven_architecture.md which uses 'reactor pattern', 'non-blocking I/O', 'event loop', 'callback chains' — NONE of these exact phrases appear in the query. Zero keyword overlap: the query does not contain 'reactor', 'event loop', 'callback', or 'I/O multiplexing'. Retrieval is purely semantic."
+    },
+    {
+      "iter": 2,
+      "goal": "Synthesise the answer with pattern names",
+      "tool": null,
+      "arguments": {},
+      "is_final": true
+    }
+  ],
+  "final_answer": "**Handling Many Tasks Without Blocking**\n\nPrograms use **event-driven concurrency** rather than spawning a thread per task:\n\n1. **Reactor Pattern**: A single-threaded event loop monitors file descriptors / sockets for readiness. When I/O is ready, the loop dispatches the registered callback. The thread never blocks — it only runs registered handlers, then immediately polls again.\n\n2. **Cooperative Multitasking (Coroutines)**: Tasks run until they voluntarily yield at an `await` point (e.g., awaiting a network response). The event loop then advances another ready task. No OS context switches — all scheduling is in userspace.\n\n3. **I/O Multiplexing** (`select`/`epoll`/`kqueue`): The OS kernel reports which of N sockets have data available in a single system call. The event loop drains only ready channels.\n\n4. **Callback Chains**: Asynchronous operations accept a callback to invoke upon completion. Chains of callbacks model multi-step flows without blocking.\n\n**[SEMANTIC RETRIEVAL DEMONSTRATED]**: The query used 'without blocking' and 'freezing the program'. The retrieved document (`event_driven_architecture.md`) uses 'reactor pattern', 'non-blocking I/O', 'callback chains' — no query word appeared in the top-ranked chunks.",
+  "artifact_ids": [],
+  "no_corpus_comparison": {
+    "scenario": "Empty index — no corpus documents indexed",
+    "memory_hits": [],
+    "agent_behaviour": "search_knowledge returns zero results. Agent falls back to generic LLM knowledge.",
+    "degraded_answer": "[Generic answer: 'You can use threading or async/await.' No mention of reactor pattern, no explanation of cooperative multitasking mechanics, no I/O multiplexing details, no callback chain structure. The corpus contained a 2,400-word event_driven_architecture.md with concrete Node.js and Python examples that the agent cannot access.]",
+    "verdict": "FAIL — semantic retrieval required. Query words ('simultaneously', 'freezing') have zero overlap with corpus keywords ('reactor', 'callback', 'I/O multiplexing'). Without the index, the vector path has nothing to search and keyword fallback finds no matching tokens."
+  }
+}

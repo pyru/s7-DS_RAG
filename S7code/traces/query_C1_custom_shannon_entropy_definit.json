@@ -1,0 +1,48 @@
+{
+  "trace_id": "C1_20260524_134034",
+  "query_id": "C1",
+  "label": "Custom: Shannon entropy definition",
+  "query": "What is Shannon entropy and how is it calculated? Give an example calculation.",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 4.2,
+  "total_iterations": 2,
+  "semantic_retrieval": false,
+  "cross_run_memory": false,
+  "goals": [
+    "Query knowledge base for Shannon entropy definition and formula",
+    "Synthesise the answer with a worked example"
+  ],
+  "memory_hits_on_first_read": [
+    "[corpus:claude_shannon_information_theory.md chunk 1/3] Shannon entropy H(X) = -Σ p(x) log₂ p(x) measures the average information content of a random variable...",
+    "[corpus:information_theory_basics.md chunk 2/4] For a fair coin flip, H = -0.5·log₂(0.5) - 0.5·log₂(0.5) = 1 bit..."
+  ],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Query knowledge base for Shannon entropy definition and formula",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "Shannon entropy formula calculation information content"
+      },
+      "result_preview": "Shannon entropy H(X) = -Σ p(x) log₂ p(x)... entropy of a fair coin flip = 1 bit... entropy measures uncertainty...",
+      "artifact_id": null,
+      "memory_new_items": 0
+    },
+    {
+      "iter": 2,
+      "goal": "Synthesise the answer with a worked example",
+      "tool": null,
+      "arguments": {},
+      "is_final": true
+    }
+  ],
+  "final_answer": "**Shannon Entropy**\n\nShannon entropy H(X) quantifies the average uncertainty (or information content) in a random variable X:\n\n```\nH(X) = -Σ p(xᵢ) · log₂ p(xᵢ)\n```\n\nThe unit is **bits** when using log base 2.\n\n**Worked Example — Fair Coin Flip**:\n- P(heads) = 0.5, P(tails) = 0.5\n- H = -(0.5·log₂(0.5) + 0.5·log₂(0.5))\n- H = -(0.5·(-1) + 0.5·(-1)) = **1 bit**\n\n**Biased Coin (P(H)=0.9)**:\n- H = -(0.9·log₂(0.9) + 0.1·log₂(0.1)) ≈ **0.469 bits**\nThe biased coin carries less information per flip — you already know the outcome with high probability.",
+  "artifact_ids": [],
+  "no_corpus_comparison": {
+    "scenario": "Empty index — no corpus documents indexed",
+    "memory_hits": [],
+    "agent_behaviour": "Decision calls search_knowledge, receives zero results. Falls back to parametric LLM knowledge.",
+    "degraded_answer": "Shannon entropy is H = -Σ p(x) log p(x). [Generic LLM answer with no corpus grounding. No worked example is provided because the agent has no indexed document to pull from. The answer is correct in formula but shallow — no multi-bit entropy table, no connection to Shannon's 1948 paper context, no corpus provenance.]",
+    "verdict": "FAIL — answer correct in formula but lacks depth, worked example, and corpus attribution. With corpus: 2 iterations, grounded answer. Without: generic reply."
+  }
+}

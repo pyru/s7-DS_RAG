@@ -1,0 +1,68 @@
+{
+  "trace_id": "A_20260524_134034",
+  "query_id": "A",
+  "label": "Shannon Wikipedia extraction",
+  "query": "Who was Claude Shannon? What is he famous for and what is his most important contribution to science?",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 12.4,
+  "total_iterations": 4,
+  "semantic_retrieval": false,
+  "cross_run_memory": false,
+  "goals": [
+    "Fetch Claude Shannon's Wikipedia page",
+    "Extract key information about Shannon's life and contributions",
+    "Synthesise and answer the question"
+  ],
+  "memory_hits_on_first_read": [
+    "[corpus:claude_shannon_information_theory.md chunk 1/3] Claude Elwood Shannon (1916–2001) was an American mathematician..."
+  ],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Fetch Claude Shannon's Wikipedia page",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "Claude Shannon information theory biography"
+      },
+      "result_preview": "[corpus:claude_shannon_information_theory.md chunk 1/3] Claude Elwood Shannon (1916–2001) was an American mathematician and electrical engineer...",
+      "artifact_id": null,
+      "memory_new_items": 0
+    },
+    {
+      "iter": 2,
+      "goal": "Fetch Claude Shannon's Wikipedia page",
+      "tool": "fetch_url",
+      "arguments": {
+        "url": "https://en.wikipedia.org/wiki/Claude_Shannon"
+      },
+      "result_preview": "Claude Elwood Shannon (April 30, 1916 – February 24, 2001) was an American mathematician, electrical engineer...",
+      "artifact_id": "art:a7f9d3c1",
+      "memory_new_items": 1
+    },
+    {
+      "iter": 3,
+      "goal": "Extract key information about Shannon's life and contributions",
+      "tool": null,
+      "arguments": {},
+      "result_preview": null,
+      "artifact_id": null,
+      "answer": "Shannon's key contributions: (1) 1948 paper 'A Mathematical Theory of Communication'; (2) entropy as measure of information; (3) channel capacity theorem; (4) coined the term 'bit'",
+      "memory_new_items": 1
+    },
+    {
+      "iter": 4,
+      "goal": "Synthesise and answer the question",
+      "tool": null,
+      "arguments": {},
+      "result_preview": null,
+      "artifact_id": null,
+      "answer": "Claude Elwood Shannon (1916–2001) was an American mathematician and electrical engineer known as the father of information theory...",
+      "is_final": true,
+      "memory_new_items": 0
+    }
+  ],
+  "final_answer": "Claude Elwood Shannon (1916–2001) was an American mathematician and electrical engineer widely regarded as the father of information theory. His landmark 1948 paper 'A Mathematical Theory of Communication' introduced the concept of entropy as a mathematical measure of information content, defined in bits: H(X) = -Σ p(xᵢ) log₂ p(xᵢ). His most important contribution is the channel capacity theorem, which proves a fundamental limit C = B log₂(1+S/N) on reliable information transmission — a result that underlies all of modern digital communications, the Internet, mobile telephony, and data storage. Shannon also coined the term 'bit' (binary digit), proved that one-time pads are the only unconditionally secure cipher, and contributed to chess programming and artificial intelligence. He spent most of his career at Bell Labs and MIT, where he was known for riding a unicycle while juggling through the lab corridors.",
+  "artifact_ids": [
+    "art:a7f9d3c1"
+  ]
+}

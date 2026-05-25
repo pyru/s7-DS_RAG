@@ -1,0 +1,54 @@
+{
+  "trace_id": "D_20260524_134034",
+  "query_id": "D",
+  "label": "Asyncio research synthesis",
+  "query": "Explain Python asyncio: how does the event loop work, what is the difference between tasks and coroutines, and what are the best patterns for production use?",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 9.1,
+  "total_iterations": 3,
+  "semantic_retrieval": false,
+  "cross_run_memory": false,
+  "goals": [
+    "Query knowledge base for asyncio fundamentals",
+    "Query knowledge base for asyncio advanced patterns",
+    "Synthesise a comprehensive answer"
+  ],
+  "memory_hits_on_first_read": [
+    "[corpus:python_asyncio_fundamentals.md chunk 1/4] Python's asyncio library provides infrastructure for writing concurrent code...",
+    "[corpus:asyncio_advanced_patterns.md chunk 1/3] Python 3.11 introduced asyncio.TaskGroup as the preferred pattern...",
+    "[corpus:python_concurrency.md chunk 2/4] asyncio excels at I/O-bound workloads..."
+  ],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Query knowledge base for asyncio fundamentals",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "Python asyncio event loop coroutines tasks"
+      },
+      "result_preview": "The event loop is asyncio's core scheduler. It maintains a queue of callbacks and coroutines... await asyncio.sleep(1)... asyncio.create_task()...",
+      "artifact_id": null,
+      "memory_new_items": 0
+    },
+    {
+      "iter": 2,
+      "goal": "Query knowledge base for asyncio advanced patterns",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "asyncio TaskGroup Semaphore producer consumer patterns"
+      },
+      "result_preview": "asyncio.TaskGroup provides automatic cancellation on failure... asyncio.Queue enables decoupled producer-consumer pipelines...",
+      "artifact_id": null,
+      "memory_new_items": 0
+    },
+    {
+      "iter": 3,
+      "goal": "Synthesise a comprehensive answer",
+      "tool": null,
+      "arguments": {},
+      "is_final": true
+    }
+  ],
+  "final_answer": "**Python asyncio: Comprehensive Guide**\n\n**How the Event Loop Works**\nasyncio's event loop is a single-threaded scheduler that runs coroutines cooperatively. Only one coroutine executes at a time — when a coroutine hits an `await` expression, it suspends and the loop picks up another ready coroutine. The loop monitors I/O handles (sockets, pipes) via the OS's epoll/kqueue/select, scheduling callbacks when handles become ready.\n\n**Coroutines vs Tasks**\n- **Coroutine**: A function defined with `async def`. Calling it returns a coroutine object (not a result). It doesn't start executing until awaited or scheduled.\n- **Task**: Created by `asyncio.create_task(coro)`. Wraps a coroutine and schedules it immediately. Tasks run concurrently with other tasks — they are the unit of concurrency in asyncio.\n\n**Production Patterns**\n1. **TaskGroup (Python 3.11+)**: Use `async with asyncio.TaskGroup() as tg` for structured concurrency. Automatically cancels all remaining tasks if any fails.\n2. **Semaphore for rate limiting**: `asyncio.Semaphore(n)` limits concurrency across many tasks.\n3. **Queue for producer-consumer**: Decoupled pipeline with backpressure.\n4. **Timeout with `asyncio.timeout()`**: Context-manager approach to bounded operations.\n5. **Offload CPU work**: Use `loop.run_in_executor(ProcessPoolExecutor())` for CPU-bound work.\n6. **uvloop on Linux**: Drop-in replacement for 2-4× throughput improvement.",
+  "artifact_ids": []
+}

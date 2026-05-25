@@ -1,0 +1,55 @@
+{
+  "trace_id": "H_20260524_134034",
+  "query_id": "H",
+  "label": "Cross-document synthesis",
+  "query": "How do FAISS vector indices and sentence transformer embeddings work together in a RAG pipeline? What are the tradeoffs between different index types?",
+  "timestamp": "2026-05-24T13:40:34.912433+00:00",
+  "elapsed_s": 10.5,
+  "total_iterations": 3,
+  "semantic_retrieval": false,
+  "cross_run_memory": false,
+  "goals": [
+    "Query for FAISS index information",
+    "Query for sentence transformer embeddings",
+    "Query for RAG pipeline integration",
+    "Synthesise cross-document answer"
+  ],
+  "memory_hits_on_first_read": [
+    "[corpus:faiss_vector_store.md chunk 1/4] FAISS (Facebook AI Similarity Search)...",
+    "[corpus:sentence_transformers_guide.md chunk 2/3] Sentence Transformers is a Python library...",
+    "[corpus:retrieval_augmented_generation.md chunk 1/4] Retrieval-Augmented Generation (RAG) combines..."
+  ],
+  "iterations": [
+    {
+      "iter": 1,
+      "goal": "Query for FAISS index information",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "FAISS index types tradeoffs IndexFlatIP HNSW IVF"
+      },
+      "result_preview": "IndexFlatIP: inner product. IndexIVFFlat: partitions into Voronoi cells...",
+      "artifact_id": null,
+      "memory_new_items": 0
+    },
+    {
+      "iter": 2,
+      "goal": "Query for sentence transformer embeddings",
+      "tool": "search_knowledge",
+      "arguments": {
+        "query": "sentence transformers encoding embeddings all-MiniLM retrieval"
+      },
+      "result_preview": "Sentence Transformers produces semantically meaningful dense vector representations... bi-encoder models...",
+      "artifact_id": null,
+      "memory_new_items": 0
+    },
+    {
+      "iter": 3,
+      "goal": "Synthesise cross-document answer",
+      "tool": null,
+      "arguments": {},
+      "is_final": true
+    }
+  ],
+  "final_answer": "**FAISS + Sentence Transformers in a RAG Pipeline**\n\nThe combination works as follows:\n1. **Encoding (offline)**: A sentence-transformer model (e.g., `all-MiniLM-L6-v2`, 384 dimensions) encodes each document chunk into a dense vector. Documents use `task_type='retrieval_document'`.\n2. **Indexing**: Vectors are L2-normalized and stored in a FAISS index with a parallel id list for lookup.\n3. **Query encoding (online)**: The user's query is encoded with the same model using `task_type='retrieval_query'`.\n4. **Retrieval**: FAISS inner-product search (`IndexFlatIP`) finds the k nearest document vectors.\n5. **Generation**: Retrieved chunks are prepended to the LLM prompt as grounding context.\n\n**Index Tradeoffs**:\n| Index | Recall | Speed | Memory | Training | Use Case |\n|-------|--------|-------|--------|----------|----------|\n| IndexFlatIP | 1.00 | Slow | Full | None | Ground truth, <1M |\n| IndexHNSWFlat | >0.99 | Fast | Full | None | Production <100M |\n| IndexIVFFlat | ~0.95 | Faster | Full | Yes | 1M–1B |\n| IndexIVFPQ | ~0.90 | Fastest | 4-32× less | Yes | Billion scale |\n\nThe S7 agent uses `IndexFlatIP` on L2-normalized vectors (cosine similarity). Correct model pinning is critical — switching embedding models invalidates all indexed vectors.",
+  "artifact_ids": []
+}
