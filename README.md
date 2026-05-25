@@ -116,6 +116,99 @@ Full manifest: `S7code/sandbox/corpus/corpus_index.md`
 
 ---
 
+## PDF Reference Library
+
+49 reference books in `S7code/sandbox/RAG/` — gitignored due to file size, available locally. These are the source material from which the 56 corpus markdown documents were distilled.
+
+### Python & Data Science (8)
+| Title | Author | Year |
+|-------|--------|------|
+| Python Data Science Handbook | Jake VanderPlas | 2016 |
+| Python for Data Analysis | Wes McKinney | 2022 |
+| Python Crash Course | Eric Matthes | 2023 |
+| Python for Data Science | Yuli Vasiliev | 2022 |
+| Python All-in-One For Dummies | Shovic & Simpson | 2021 |
+| Python Machine Learning By Example | Yuxi Liu | 2020 |
+| Python Programming (Complete Guide) | Nicholas Ayden | 2019 |
+| Data Science at the Command Line | Jeroen Janssens | 2014 |
+
+### Machine Learning — Core (7)
+| Title | Author | Year |
+|-------|--------|------|
+| Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow | Aurélien Géron | 2023 |
+| The Hundred-Page Machine Learning Book | Andriy Burkov | 2019 |
+| Machine Learning for Absolute Beginners | Oliver Theobald | 2020 |
+| Machine Learning Yearning | Andrew Ng | draft |
+| Introduction to Machine Learning with Python | Müller & Guido | 2016 |
+| Machine Learning Design Patterns | Lakshmanan et al. | 2020 |
+| The StatQuest Illustrated Guide to Machine Learning | Josh Starmer | — |
+
+### Deep Learning (3)
+| Title | Author | Year |
+|-------|--------|------|
+| Deep Learning | Goodfellow, Bengio, Courville | 2016 |
+| Deep Learning Pipeline with TensorFlow | El-Amir & Hamdy | 2020 |
+| Deep Learning with Python | Jason Brownlee | — |
+
+### Statistics & Mathematics (6)
+| Title | Author | Year |
+|-------|--------|------|
+| Think Stats | Allen B. Downey | 2011 |
+| Mathematics for Machine Learning | Deisenroth, Faisal, Ong | 2021 |
+| Introductory Business Statistics | OpenStax | — |
+| Foundations of Probabilistic Programming | Barthe, Katoen, Silva | 2021 |
+| Introduction to Statistical Relational Learning | Getoor & Taskar | 2007 |
+| Modeling and Simulation in Python | Allen B. Downey | 2023 |
+
+### Systems & Engineering (5)
+| Title | Author | Year |
+|-------|--------|------|
+| Designing Machine Learning Systems | Chip Huyen | 2022 |
+| Designing Data-Intensive Applications | Martin Kleppmann | 2018 |
+| Fundamentals of Data Engineering | Reis & Housley | 2022 |
+| System Design Interview | Alex Xu | 2020 |
+| Machine Learning Design Interview | Khang Pham | 2022 |
+
+### Algorithms & Coding (6)
+| Title | Author | Year |
+|-------|--------|------|
+| Grokking Algorithms | Aditya Bhargava | 2016 |
+| Data Structures and Algorithm Analysis in Java | Mark Allen Weiss | 2012 |
+| Cracking the Coding Interview | Gayle Laakmann McDowell | 2015 |
+| The Recursive Book of Recursion | Al Sweigart | 2022 |
+| Programming Interview Problems: Dynamic Programming | Leonardo Rossi | 2020 |
+| Machine Learning Algorithms From Scratch | Jason Brownlee | 2018 |
+
+### Interview Preparation (5)
+| Title | Author | Year |
+|-------|--------|------|
+| DSI ACE PREP — Data Science Interview Handbook | Data Science Interview Books | — |
+| Data Science & ML Interview Questions Using Python | Vishwanathan Narayanan | — |
+| 500 Most Important Data Science Interview Q&A | Vamsee Puligadda | 2018 |
+| 120 Real Data Science Interview Questions | Shan, Song, Wang, Chen | 2015 |
+| Data Science from Scratch | Steven Cooper | — |
+
+### Visualization & BI (5)
+| Title | Author | Year |
+|-------|--------|------|
+| Data Storytelling and Visualization with Tableau | Joshi & Mahalle | 2022 |
+| The Tableau Workshop | Gupta, Pinto et al. | — |
+| Microsoft Power BI For Dummies | Jack A. Hyman | 2022 |
+| Excel Data Analysis For Dummies | Paul McFedries | 2022 |
+| Excel All-in-One | McFedries & Harvey | 2022 |
+
+### Other (4)
+| Title | Author | Year |
+|-------|--------|------|
+| Imbalanced Classification with Python | Jason Brownlee | 2020 |
+| Chaos: Making a New Science | James Gleick | — |
+| Introduction to Statistical Relational Learning | Getoor & Taskar | 2007 |
+| Linux For Dummies | Richard Blum | 2020 |
+
+> **Note:** PDFs are excluded from git (`sandbox/RAG/` is in `.gitignore`). The 56 indexed markdown documents in `sandbox/corpus/` are distilled summaries that fit within the embedding model's 512-token chunk limit.
+
+---
+
 ## MCP Tools (11 total)
 
 | Tool | Purpose |
