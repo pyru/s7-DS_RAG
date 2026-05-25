@@ -45,6 +45,14 @@ export interface QueryRun {
 
 export type IndexedStatus = 'indexed' | 'not_indexed' | 'stale';
 
+export interface PdfBook {
+  id: string;
+  title: string;
+  author: string;
+  year: string;
+  category: string;
+}
+
 export interface RagDocument {
   id: string;
   fileName: string;

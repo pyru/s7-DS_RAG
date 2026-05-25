@@ -1,6 +1,8 @@
 import { useMemo, useState, useRef, useEffect } from 'react';
 import DocumentTable from './DocumentTable';
+import PdfTable from './PdfTable';
 import { DOCUMENTS } from '../data/documents';
+import { PDFS } from '../data/pdfs';
 import { MOCK_TRACES } from '../data/traces';
 import type { IndexedStatus, RagDocument, TraceEvent } from '../types';
 
@@ -74,27 +76,15 @@ function TraceLine({ event }: { event: TraceEvent }) {
 const CATEGORY_PROMPTS: Record<string, string[]> = {
   '': [
     'What are the key contributions of the Transformer architecture?',
-    'How does ReAct differ from chain-of-thought reasoning?',
-    'How do indexed papers handle the credit assignment problem?',
-    'What does the Reflexion paper say about self-improvement?',
+    'What is FAISS and how does it enable fast vector search?',
+    'How does asyncio handle concurrent tasks in Python?',
+    'What is Shannon entropy and how is it calculated?',
   ],
-  'Foundational Architecture': [
-    'How does the Transformer handle positional information without recurrence?',
-    'What are the differences between BERT and GPT-style models?',
-    'How does ViT apply attention to image patches for classification?',
-    'What safety evaluations were conducted for GPT-4?',
-  ],
-  'Prompting & Reasoning': [
-    'How does chain-of-thought prompting improve multi-step reasoning?',
-    'When should I use self-consistency over a single chain-of-thought?',
-    'What is tree-of-thought and when does it outperform CoT?',
-    'How do scratchpad prompts affect LLM arithmetic performance?',
-  ],
-  'Agent Frameworks': [
-    'How does ReAct interleave reasoning traces with tool calls?',
-    'What verbal reinforcement loop does Reflexion use?',
-    'How does Toolformer decide when to invoke a tool mid-generation?',
-    'Compare AutoGen vs CrewAI for multi-agent task orchestration',
+  'Information Theory': [
+    'What is Shannon entropy and how is H(X) = -Σpᵢlog₂pᵢ calculated?',
+    'Explain the channel capacity theorem C = B log₂(1 + S/N)',
+    'How does Huffman coding achieve optimal lossless compression?',
+    'What is mutual information and how does it relate to entropy?',
   ],
   'RAG & Retrieval': [
     'What are the key components of a production RAG pipeline?',
@@ -102,29 +92,35 @@ const CATEGORY_PROMPTS: Record<string, string[]> = {
     'What chunking strategies work best for long-document RAG indexing?',
     'How does hybrid search combine BM25 and dense vector retrieval?',
   ],
-  'Models & Training': [
-    'What techniques are used for instruction fine-tuning of LLMs?',
-    'How does RLHF improve model alignment from human feedback?',
+  'LLM & ML': [
+    'How does the Transformer handle positional information without recurrence?',
     'What are the trade-offs between full fine-tuning and LoRA?',
-    'How does quantization affect LLM quality and inference speed?',
+    'How does RLHF improve model alignment from human feedback?',
+    'What is the ReAct pattern for tool-using LLM agents?',
   ],
-  'Infrastructure': [
-    'How does vLLM achieve higher throughput than naive inference?',
-    'What is tensor parallelism and when should it be used?',
-    'How does KV cache work during autoregressive decoding?',
-    'What are the trade-offs between continuous and dynamic batching?',
+  'Tokyo & Japan': [
+    'What are the best activities in Tokyo during April cherry blossom season?',
+    'What weather should I expect visiting Tokyo in spring?',
+    'How do I navigate Tokyo\'s subway system efficiently?',
+    'What cultural etiquette should I know before visiting Japan?',
   ],
-  'Evaluation & Benchmarks': [
-    'What benchmarks best measure LLM multi-step reasoning ability?',
-    'How is MMLU structured and what cognitive skills does it test?',
-    'What are the limitations of current automated LLM evaluation?',
-    'How do human preference evaluations compare to automated benchmarks?',
+  'Python & Async': [
+    'How does the Python asyncio event loop work under the hood?',
+    'What is the difference between a coroutine and a Task in asyncio?',
+    'How does event-driven architecture differ from threaded concurrency?',
+    'What are the best asyncio patterns for production Python services?',
   ],
-  'Multimodal': [
-    'How do multimodal models align image and text representations?',
-    'What is CLIP and how does contrastive learning work?',
-    'How does GPT-4V process and reason about visual inputs?',
-    'What are the key challenges in cross-modal grounding?',
+  'Systems & Infra': [
+    'What are the CAP theorem implications for distributed databases?',
+    'How do microservices differ from monolithic architectures?',
+    'What is the saga pattern for distributed transactions?',
+    'How does Docker and Kubernetes orchestration work together?',
+  ],
+  'ML Foundations': [
+    'How does backpropagation compute gradients through a neural network?',
+    'What are the key differences between k-means and DBSCAN clustering?',
+    'How does PCA reduce dimensionality while preserving variance?',
+    'What is the Model Context Protocol and how do MCP tools work?',
   ],
 };
 
@@ -420,10 +416,11 @@ const ALL_STATUSES: { value: '' | IndexedStatus; label: string }[] = [
 
 // ── Page ──────────────────────────────────────────────────────────
 export default function DocumentsPage() {
-  const [search, setSearch]               = useState('');
-  const [statusFilter, setStatusFilter]   = useState<'' | IndexedStatus>('');
+  const [activeTab, setActiveTab]           = useState<'corpus' | 'pdfs'>('corpus');
+  const [search, setSearch]                 = useState('');
+  const [statusFilter, setStatusFilter]     = useState<'' | IndexedStatus>('');
   const [categoryFilter, setCategoryFilter] = useState('');
-  const [toast, setToast]                 = useState<string | null>(null);
+  const [toast, setToast]                   = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -458,65 +455,99 @@ export default function DocumentsPage() {
       <div className="page-header">
         <h1>RAG Documents</h1>
         <p>
-          Corpus of {DOCUMENTS.length} documents indexed into the FAISS vector store.
-          Filter by name, category, or indexing status.
+          Indexed corpus of {DOCUMENTS.length} markdown documents plus a reference library of {PDFS.length} books.
+          Switch tabs to browse each collection.
         </p>
       </div>
 
-      <DocsStats />
-
-      {/* ── Query Playground ── */}
-      <QueryPlayground category={categoryFilter} />
-
-      {/* ── Document table toolbar ── */}
-      <div className="toolbar" style={{ marginTop: 28 }}>
-        <div className="search-box">
-          <IconSearch />
-          <input
-            className="search-input"
-            type="search"
-            placeholder="Search by file, title, or description…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            aria-label="Search documents"
-          />
-        </div>
-
-        <select
-          className="filter-select"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value as '' | IndexedStatus)}
-          aria-label="Filter by status"
+      {/* ── Sub-tabs ── */}
+      <div className="doc-tab-bar">
+        <button
+          className={`doc-tab ${activeTab === 'corpus' ? 'active' : ''}`}
+          onClick={() => setActiveTab('corpus')}
         >
-          {ALL_STATUSES.map((s) => (
-            <option key={s.value} value={s.value}>{s.label}</option>
-          ))}
-        </select>
-
-        <select
-          className="filter-select"
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          aria-label="Filter by category"
+          Corpus
+          <span className="doc-tab-badge">{DOCUMENTS.length}</span>
+        </button>
+        <button
+          className={`doc-tab ${activeTab === 'pdfs' ? 'active' : ''}`}
+          onClick={() => setActiveTab('pdfs')}
         >
-          <option value="">All Categories</option>
-          {ALL_CATEGORIES.map((c) => (
-            <option key={c} value={c}>{c}</option>
-          ))}
-        </select>
-
-        {hasFilters && (
-          <button className="btn btn-ghost btn-sm" onClick={handleClearFilters}>
-            Clear filters
-          </button>
-        )}
-
-        <span className="result-count">
-          {filtered.length} of {DOCUMENTS.length} documents
-        </span>
+          PDF Library
+          <span className="doc-tab-badge">{PDFS.length}</span>
+        </button>
       </div>
 
-      <DocumentTable documents={filtered} onView={handleView} />
+      {/* ── Corpus tab ── */}
+      {activeTab === 'corpus' && (
+        <>
+          <DocsStats />
+
+          <QueryPlayground category={categoryFilter} />
+
+          <div className="toolbar" style={{ marginTop: 28 }}>
+            <div className="search-box">
+              <IconSearch />
+              <input
+                className="search-input"
+                type="search"
+                placeholder="Search by file, title, or description…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                aria-label="Search documents"
+              />
+            </div>
+
+            <select
+              className="filter-select"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as '' | IndexedStatus)}
+              aria-label="Filter by status"
+            >
+              {ALL_STATUSES.map((s) => (
+                <option key={s.value} value={s.value}>{s.label}</option>
+              ))}
+            </select>
+
+            <select
+              className="filter-select"
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              aria-label="Filter by category"
+            >
+              <option value="">All Categories</option>
+              {ALL_CATEGORIES.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+
+            {hasFilters && (
+              <button className="btn btn-ghost btn-sm" onClick={handleClearFilters}>
+                Clear filters
+              </button>
+            )}
+
+            <span className="result-count">
+              {filtered.length} of {DOCUMENTS.length} documents
+            </span>
+          </div>
+
+          <DocumentTable documents={filtered} onView={handleView} />
+        </>
+      )}
+
+      {/* ── PDF Library tab ── */}
+      {activeTab === 'pdfs' && (
+        <>
+          <div className="pdf-library-header">
+            <p className="pdf-library-desc">
+              {PDFS.length} reference books in <code>S7code/sandbox/RAG/</code> — organised by domain.
+              These are the source material from which the {DOCUMENTS.length} indexed corpus documents were distilled.
+            </p>
+          </div>
+          <PdfTable />
+        </>
+      )}
 
       <Toast message={toast ?? ''} visible={toast !== null} />
     </main>
