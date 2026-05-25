@@ -5,7 +5,7 @@
 
 # runtime state
 state/
-sandbox/
+sandbox/RAG/
 usage.json
 
 # python

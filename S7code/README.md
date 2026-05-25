@@ -139,9 +139,8 @@ A React + TypeScript single-page app that provides a visual interface over the a
 
 | Tab | Route | What it shows |
 |-----|-------|---------------|
-| **RAG Documents** | `/` | 4-document Indian Tax corpus with search/filter + inline QueryRunner |
-| **Queries** | `/queries` | 8 predefined evaluation queries (A–H) with live status counters |
-| **Traces** | `/traces` | Run history sidebar + per-iteration execution trace viewer |
+| **Queries** | `/queries` | 8 evaluation query cards (A–H) with live trace streaming and stat tiles |
+| **RAG Documents** | `/documents` | RAG Query Playground (category-aware prompts) + 56-document corpus browser |
 
 ### Quick Start
 
@@ -161,9 +160,9 @@ npm run dev          # starts on http://localhost:5173
 
 ### Key Features
 
-**Inline Query Runner (Documents page)**
+**RAG Query Playground (Documents page)**
 
-Type any Indian tax question or pick a suggestion chip. A simulated RAG trace fires event-by-event (memory.read → perception → decision → action) and displays a keyword-matched statutory answer referencing real chunk IDs and document sources.
+Type any question or pick a category-aware suggestion chip (chips update when you change the category filter). A simulated RAG trace fires event-by-event (memory.read → perception → decision → action) at 380 ms/step and displays the synthesised answer. Ctrl+Enter to run.
 
 **Evaluation Queries (Queries page)**
 
@@ -215,9 +214,9 @@ rag-ui/
 │   │   └── RunsContext.tsx         global state: runs, activeRunId, statusMap
 │   │
 │   ├── data/
-│   │   ├── documents.ts            4 Indian Tax corpus document records
+│   │   ├── documents.ts            56-document corpus records (8 categories)
 │   │   ├── queries.ts              8 evaluation query definitions (A–H)
-│   │   └── traces.ts               mock trace data for pre-populated history
+│   │   └── traces.ts               mock trace data for all 8 queries
 │   │
 │   └── types/
 │       └── index.ts                TypeScript interfaces (TraceRun, Query, etc.)
@@ -725,13 +724,18 @@ S7#DS_RAG/                            ← repository root
     │
     ├── traces/                        pre-generated demonstration traces
     │   ├── query_A_shannon_wikipedia_extraction.json
-    │   ├── query_B_tokyo_activity__weather_planni.json
+    │   ├── query_B_tokyo_activity_weather_plannin.json
     │   ├── query_C_durable_birthday_memory.json          [CROSS-RUN]
     │   ├── query_D_asyncio_research_synthesis.json
     │   ├── query_E_single-document_indexing.json
     │   ├── query_F_cross-run_document_recall.json        [CROSS-RUN]
-    │   ├── query_G_synonym_recall_(semantic_retri.json   [SEMANTIC]
-    │   └── query_H_cross-document_synthesis.json
+    │   ├── query_G_synonym_recall_semantic_retrie.json   [SEMANTIC]
+    │   ├── query_H_cross-document_synthesis.json
+    │   ├── query_C1_custom_shannon_entropy_definit.json
+    │   ├── query_C2_custom_tokyo_food_recommendati.json
+    │   ├── query_C3_custom_semantic_non-blocking_e.json  [SEMANTIC]
+    │   ├── query_C4_custom_lora_vs_full_fine-tunin.json
+    │   └── query_C5_custom_semantic_similarity_com.json  [SEMANTIC]
     │
     ├── docs/
     │   └── architecture.md            full architecture documentation
