@@ -20,9 +20,13 @@ function IconSearch() {
   );
 }
 
-export default function PdfTable() {
-  const [search, setSearch]           = useState('');
-  const [categoryFilter, setCategory] = useState('');
+interface PdfTableProps {
+  category: string;
+  onCategoryChange: (cat: string) => void;
+}
+
+export default function PdfTable({ category, onCategoryChange }: PdfTableProps) {
+  const [search, setSearch] = useState('');
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -32,10 +36,10 @@ export default function PdfTable() {
         p.title.toLowerCase().includes(q) ||
         p.author.toLowerCase().includes(q) ||
         p.category.toLowerCase().includes(q);
-      const matchCategory = !categoryFilter || p.category === categoryFilter;
+      const matchCategory = !category || p.category === category;
       return matchSearch && matchCategory;
     });
-  }, [search, categoryFilter]);
+  }, [search, category]);
 
   return (
     <div style={{ marginTop: 24 }}>
@@ -55,8 +59,8 @@ export default function PdfTable() {
 
         <select
           className="filter-select"
-          value={categoryFilter}
-          onChange={(e) => setCategory(e.target.value)}
+          value={category}
+          onChange={(e) => onCategoryChange(e.target.value)}
           aria-label="Filter by category"
         >
           <option value="">All Categories</option>
@@ -65,8 +69,8 @@ export default function PdfTable() {
           ))}
         </select>
 
-        {(search || categoryFilter) && (
-          <button className="btn btn-ghost btn-sm" onClick={() => { setSearch(''); setCategory(''); }}>
+        {(search || category) && (
+          <button className="btn btn-ghost btn-sm" onClick={() => { setSearch(''); onCategoryChange(''); }}>
             Clear filters
           </button>
         )}
@@ -106,7 +110,16 @@ export default function PdfTable() {
                   </td>
                   <td><span className="doc-date">{book.author}</span></td>
                   <td><span className="doc-date">{book.year}</span></td>
-                  <td><span className="doc-category">{book.category}</span></td>
+                  <td>
+                    <span
+                      className="doc-category"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => onCategoryChange(book.category === category ? '' : book.category)}
+                      title={`Filter by ${book.category}`}
+                    >
+                      {book.category}
+                    </span>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -122,6 +122,55 @@ const CATEGORY_PROMPTS: Record<string, string[]> = {
     'How does PCA reduce dimensionality while preserving variance?',
     'What is the Model Context Protocol and how do MCP tools work?',
   ],
+  // ── PDF Library categories ─────────────────────────────────────
+  'Python & Data Science': [
+    'How does asyncio enable concurrent Python programming?',
+    'What are Python type hints and how do Protocol types work?',
+    'How do generators and iterators differ, and when to use each?',
+    'What is the difference between threading and multiprocessing in Python?',
+  ],
+  'Machine Learning': [
+    'What are the trade-offs between full fine-tuning and LoRA?',
+    'How do scaling laws predict optimal model training compute?',
+    'What is RLHF and how does it align LLMs with human preferences?',
+    'What evaluation metrics best measure LLM reasoning performance?',
+  ],
+  'Deep Learning': [
+    'How does the Transformer architecture use self-attention?',
+    'What is knowledge distillation and how does it compress models?',
+    'How do multimodal models align image and text representations?',
+    'How does attention differ between encoder and decoder layers?',
+  ],
+  'Statistics & Math': [
+    'What is Shannon entropy and how is H(X) = -Σpᵢlog₂pᵢ derived?',
+    'How does PCA use eigendecomposition to reduce dimensionality?',
+    'What is mutual information and how does it relate to KL divergence?',
+    'How do clustering algorithms like k-means and DBSCAN compare?',
+  ],
+  'Systems & Engineering': [
+    'What are the CAP theorem implications for distributed databases?',
+    'How do microservices patterns like saga and circuit breaker work?',
+    'How does Docker and Kubernetes manage containerised workloads?',
+    'What REST API design principles ensure scalability?',
+  ],
+  'Algorithms & Coding': [
+    'How does dynamic programming solve optimisation problems?',
+    'What data structures are most efficient for nearest neighbour search?',
+    'How do hash tables achieve O(1) average lookup time?',
+    'What are the time and space tradeoffs between sorting algorithms?',
+  ],
+  'Interview Prep': [
+    'What are the most important ML evaluation metrics to know?',
+    'How does SQL indexing improve database query performance?',
+    'What is the difference between precision, recall, and F1 score?',
+    'How do you approach a machine learning system design interview?',
+  ],
+  'Visualization & BI': [
+    'What are best practices for effective data visualisation?',
+    'How do you choose the right chart type for your data?',
+    'What evaluation metrics matter most for ML model comparison?',
+    'How does dimensionality reduction help visualise high-dimensional data?',
+  ],
 };
 
 // ── Pick a matching mock trace or build a generic one ─────────────
@@ -420,6 +469,7 @@ export default function DocumentsPage() {
   const [search, setSearch]                 = useState('');
   const [statusFilter, setStatusFilter]     = useState<'' | IndexedStatus>('');
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [pdfCategory, setPdfCategory]       = useState('');
   const [toast, setToast]                   = useState<string | null>(null);
 
   const filtered = useMemo(() => {
@@ -545,7 +595,10 @@ export default function DocumentsPage() {
               These are the source material from which the {DOCUMENTS.length} indexed corpus documents were distilled.
             </p>
           </div>
-          <PdfTable />
+
+          <QueryPlayground category={pdfCategory} />
+
+          <PdfTable category={pdfCategory} onCategoryChange={setPdfCategory} />
         </>
       )}
 
